@@ -1,0 +1,19 @@
+{
+"schema":"offdiff/1",
+"format":"docx",
+"properties":{"stable":{"author":"Sidney Liangyi Zhang","created":"2026-07-03T07:59:00Z"},"volatile":{"app_version":"16.0000","application":"Microsoft Office Word","last_modified_by":"Sidney Liangyi Zhang","modified":"2026-07-03T08:00:00Z","revision":"1"}},
+"defaults":{"paragraph":"a","character":"a0","table":"a1","run":{"size":1100,"font":"等线"},"para":{"spacing":{"after":800,"line":1390,"line_rule":"auto"}}},
+"styles":{
+"a":{"kind":"paragraph","name":"Normal"},
+"a0":{"kind":"character","name":"Default Paragraph Font"},
+"a1":{"kind":"table","name":"Normal Table"}
+},
+"numbering":{},
+"media":{},
+"sections":[
+{"kind":"body","page":{"width":59530,"height":84190,"margin":{"top":7200,"right":9000,"bottom":7200,"left":9000,"header":4255,"footer":4960}},"blocks":[
+{"type":"paragraph","direct":{"align":"center"},"runs":[{"type":"text","text":"OffDiff 测试文档","direct":{"size":2200,"font":"宋体"}}]},
+{"type":"paragraph","direct":{"indent":{"first_line":2200}},"runs":[{"type":"text","text":"Test：这是一个给 Git 用的命令行工具，专门处理 Office 文件（主要是 docx）在版本控制里的尴尬处境。它不只是把文档抽成纯文本，而是在 diff 的时候把"},{"type":"text","text":"格式信息也带出来","direct":{"bold":true}},{"type":"text","text":"——标题层级、表格结构、加粗缩进这些变动都能看得见。同时它也能独立使用，顺手解决 docx 转 LaTeX 时格式对不上的麻烦。"}]}
+]}
+]
+}
