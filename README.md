@@ -281,7 +281,7 @@ src/
 
 ## 发布（维护者）
 
-发布由 [.github/workflows/release.yml](.github/workflows/release.yml) 在推送 `v*` tag 时自动完成：先跑 fmt / clippy / test，再构建 Windows、Linux、macOS 产物并发布到 GitHub Release，最后执行 `cargo publish`。
+发布由 [.github/workflows/release.yml](.github/workflows/release.yml) 在推送 `v*` tag 时自动完成：先跑 fmt / clippy / test，再构建 Windows、Linux、macOS 产物并发布到 GitHub Release，最后执行 `cargo publish`。GitHub Release 的说明取自 `CHANGELOG.md` 中对应 tag 的版本小节；缺少该小节时 `verify` 会失败。
 
 准备工作：
 

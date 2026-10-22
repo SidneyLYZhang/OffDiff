@@ -24,7 +24,7 @@
 - **Git 集成**：`git-init` 幂等写入 `.gitattributes` 与 `diff.offdiff.textconv` / `binary` / `cachetextconv`；`textconv` 输出剥离易变属性，坏文件输出稳定错误占位，**永不阻断 `git diff`**。
 - **媒体处理**：图片按原始字节的 SHA-256 内容寻址，支持按需导出到 `<stem>.media/`，或使用 `--media embed` 内联为 base64。
 - **确定性输出**：键按字典序、UTF-8 无 BOM、LF 换行、无绝对路径与时间戳；同一输入产生逐字节相同的 Diff 视图。
-- **发布自动化**：GitHub Actions 在推送 `v*` tag 时验证代码、构建 Windows/Linux/macOS 产物、发布 GitHub Release，并发布到 crates.io。
+- **发布自动化**：GitHub Actions 在推送 `v*` tag 时验证代码、构建 Windows/Linux/macOS 产物、用本文件对应版本的小节生成 GitHub Release，并发布到 crates.io。
 
 [Unreleased]: https://github.com/SidneyLYZhang/OffDiff/compare/v0.4.0...HEAD
 [0.4.0]: https://github.com/SidneyLYZhang/OffDiff/releases/tag/v0.4.0

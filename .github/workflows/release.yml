@@ -22,6 +22,14 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+      - name: Check CHANGELOG entry
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          if ! grep -Fq "## [${version}]" CHANGELOG.md; then
+            echo "::error::CHANGELOG.md has no '## [${version}]' section. Add it before tagging."
+            exit 1
+          fi
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -126,6 +134,7 @@ jobs:
     needs: [verify, build]
     runs-on: ubuntu-22.04
     steps:
+      - uses: actions/checkout@v4
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
@@ -136,9 +145,35 @@ jobs:
         run: |
           cd dist
           sha256sum * > SHA256SUMS
+      - name: Extract release notes from CHANGELOG.md
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os
+          import re
+          import sys
+          from pathlib import Path
+
+          version = os.environ["GITHUB_REF_NAME"].removeprefix("v")
+          text = Path("CHANGELOG.md").read_text(encoding="utf-8")
+          heading = re.search(rf"^## \[{re.escape(version)}\][^\n]*$", text, re.M)
+          if heading is None:
+              print(f"::error::CHANGELOG.md has no section for {version}.")
+              sys.exit(1)
+
+          rest = text[heading.end():]
+          next_heading = re.search(r"^(?:## \[|\[[^\]]+\]:)", rest, re.M)
+          section = (rest[: next_heading.start()] if next_heading else rest).strip()
+          if not section:
+              print(f"::error::CHANGELOG.md section for {version} is empty.")
+              sys.exit(1)
+
+          Path("release_notes.md").write_text(section + "\n", encoding="utf-8")
+          print(f"Extracted {len(section)} characters of release notes for {version}.")
+          PY
       - name: Create or update release
         uses: softprops/action-gh-release@v2
         with:
+          body_path: release_notes.md
           files: dist/*
-          generate_release_notes: true
           fail_on_unmatched_files: true
