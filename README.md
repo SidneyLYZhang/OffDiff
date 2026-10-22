@@ -8,6 +8,8 @@ OffDiff 把 `.docx` / `.xlsx` / `.pptx` / `.pdf` 提取成一份确定性的结�
 - **Markdown 投影**：有损，供人阅读；
 - **Diff 视图**：给 `git diff` 用的行导向 JSON，剥离易变属性。
 
+版本变更记录见 [CHANGELOG.md](CHANGELOG.md)。
+
 同一份 IR 只解析一次源文件；JSON、Markdown 与 diff 视图都是它的投影，不会各自漂移。
 
 ## 为什么需要它
@@ -34,7 +36,19 @@ OffDiff 的取舍是：
 
 ## 安装
 
-需要 Rust 工具链：
+### 从 crates.io 安装
+
+```bash
+cargo install offdiff
+```
+
+### 下载预编译二进制
+
+从 [GitHub Releases](https://github.com/SidneyLYZhang/OffDiff/releases) 下载对应平台的压缩包（Windows 为 `.zip`，Linux/macOS 为 `.tar.gz`），解压后把 `offdiff` 放入 `PATH`。
+
+### 从源码构建
+
+需要 Rust 工具链（MSRV 1.89）：
 
 ```bash
 cargo build --release
@@ -264,6 +278,27 @@ src/
 - [ ] pptx：图表、动画、母版/版式继承
 - [ ] docx：页眉页脚、脚注、批注、修订痕迹
 - [ ] 托管平台 CI：把结构化差异贴到 PR
+
+## 发布（维护者）
+
+发布由 [.github/workflows/release.yml](.github/workflows/release.yml) 在推送 `v*` tag 时自动完成：先跑 fmt / clippy / test，再构建 Windows、Linux、macOS 产物并发布到 GitHub Release，最后执行 `cargo publish`。
+
+准备工作：
+
+1. 确认 `Cargo.lock` 已提交（工作流使用 `--locked`）。
+2. 在 GitHub 仓库的 **Settings → Secrets and variables → Actions** 中添加 secret `CARGO_REGISTRY_TOKEN`（crates.io API token）。
+
+发布步骤：
+
+```bash
+# 1. 更新 Cargo.toml 的 version
+# 2. 把 CHANGELOG.md 的 [Unreleased] 内容移到新版本标题下：## [x.y.z] - YYYY-MM-DD
+# 3. 提交后打 tag 并推送
+git tag v0.4.0
+git push origin v0.4.0
+```
+
+tag 必须与 `Cargo.toml` 的版本一致（`v0.4.0` 对应 `version = "0.4.0"`），否则 `publish-crate` 任务会失败。crates.io 上同一个版本只能发布一次；需要重新发布时先提升版本号。
 
 ## 许可证
 
